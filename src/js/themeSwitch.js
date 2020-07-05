@@ -1,18 +1,35 @@
-const themeSwitchRef = document.querySelector('.js-switch-input');
-const bodyRef = document.querySelector('body');
-// console.dir(themeSwitchRef);
+export const Theme = {
+  LIGHT: 'light-theme',
+  DARK: 'dark-theme',
+};
 
-themeSwitchRef.addEventListener('change', themeSwitch);
+export const refs = {
+  switchRef: document.querySelector('.js-switch-input'),
+  bodyRef: document.querySelector('body'),
+};
 
-function themeSwitch() {
-  const themeOn = themeSwitchRef.checked;
+const themeSwitchHandler = () => {
+  const checkedOn = refs.switchRef.checked;
 
-  if (themeOn) {
-    bodyRef.classList.remove('light-theme');
-    bodyRef.classList.add('dark-theme');
-  }
-  if (!themeOn) {
-    bodyRef.classList.remove('dark-theme');
-    bodyRef.classList.add('light-theme');
-  }
+  checkedOn ? darkOn() : darkOff(); //eslint-disable-line
+};
+
+refs.switchRef.addEventListener('change', themeSwitchHandler);
+
+export function darkOn() {
+  const themeLightActive = refs.bodyRef.classList.contains(Theme.LIGHT);
+  const replace = () => refs.bodyRef.classList.replace(Theme.LIGHT, Theme.DARK);
+  const add = () => refs.bodyRef.classList.add(Theme.DARK);
+
+  themeLightActive ? replace() : add(); //eslint-disable-line
+  localStorage.setItem('theme', 'dark-theme');
+}
+
+function darkOff() {
+  const themeDarkActive = refs.bodyRef.classList.contains(Theme.DARK);
+  const replace = () => refs.bodyRef.classList.replace(Theme.DARK, Theme.LIGHT);
+  const add = () => refs.bodyRef.classList.add(Theme.LIGHT);
+
+  themeDarkActive ? replace() : add(); //eslint-disable-line
+  localStorage.clear();
 }

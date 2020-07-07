@@ -4,32 +4,32 @@ export const Theme = {
 };
 
 export const refs = {
-  switchRef: document.querySelector('.js-switch-input'),
-  bodyRef: document.querySelector('body'),
+  switcher: document.querySelector('.js-switch-input'),
+  body: document.querySelector('body'),
 };
 
-const themeSwitchHandler = () => {
-  const checkedOn = refs.switchRef.checked;
+// ADD LISTENER
+refs.switcher.addEventListener('change', themeSwitchHandler);
 
-  checkedOn ? darkOn() : darkOff(); //eslint-disable-line
-};
+// SWITCH HANDLER FN
+function themeSwitchHandler() {
+  const checkedOn = refs.switcher.checked;
 
-refs.switchRef.addEventListener('change', themeSwitchHandler);
-
-export function darkOn() {
-  const themeLightActive = refs.bodyRef.classList.contains(Theme.LIGHT);
-  const replace = () => refs.bodyRef.classList.replace(Theme.LIGHT, Theme.DARK);
-  const add = () => refs.bodyRef.classList.add(Theme.DARK);
-
-  themeLightActive ? replace() : add(); //eslint-disable-line
-  localStorage.setItem('theme', 'dark-theme');
+  checkedOn
+    ? themeChange(Theme.LIGHT, Theme.DARK)
+    : themeChange(Theme.DARK, Theme.LIGHT); //eslint-disable-line
 }
 
-function darkOff() {
-  const themeDarkActive = refs.bodyRef.classList.contains(Theme.DARK);
-  const replace = () => refs.bodyRef.classList.replace(Theme.DARK, Theme.LIGHT);
-  const add = () => refs.bodyRef.classList.add(Theme.LIGHT);
+// SWITCH FN
+export function themeChange(replaceTheme, turnTheme) {
+  // ckeck contents class
+  const checkClassTheme = refs.body.classList.contains(replaceTheme);
 
-  themeDarkActive ? replace() : add(); //eslint-disable-line
-  localStorage.clear();
+  const replaceClass = () =>
+    refs.body.classList.replace(replaceTheme, turnTheme);
+  // or
+  const addClass = () => refs.body.classList.add(turnTheme);
+
+  checkClassTheme ? replaceClass() : addClass(); //eslint-disable-line
+  localStorage.setItem('theme', turnTheme);
 }

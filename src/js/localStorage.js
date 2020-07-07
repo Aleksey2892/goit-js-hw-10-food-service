@@ -1,14 +1,20 @@
-import { Theme, refs, darkOn } from './themeSwitch';
+import { Theme, refs, themeChange } from './themeSwitch';
 
-const applyTheme = () => {
+// APPLY THEME ON PAGE LOAD FROM STORAGE
+const applyTheme = (replaceTheme, turnTheme) => {
+  themeChange(replaceTheme, turnTheme);
   localStorage.clear();
-  refs.switchRef.checked = true;
-  darkOn();
 };
 
 try {
   const preloadTheme = localStorage.getItem('theme') === Theme.DARK;
-  if (preloadTheme) applyTheme();
+
+  if (preloadTheme) {
+    refs.switcher.checked = true;
+    applyTheme(Theme.LIGHT, Theme.DARK);
+  } else {
+    applyTheme(Theme.DARK, Theme.LIGHT);
+  }
 } catch (err) {
   console.error('Set state error: ', err);
 }
